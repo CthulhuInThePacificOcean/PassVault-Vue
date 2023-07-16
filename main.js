@@ -7,11 +7,27 @@ const fileList = document.querySelector('#file-list');
 const input = document.querySelector('#file-name');
 const tabs = document.querySelectorAll('.tabs');
 const flex2 = document.querySelector('#box-2');
+const nameTag = document.querySelector('.name-input');
+const siteTag = document.querySelector('.site-input');
+const userTag = document.querySelector('.user-input');
+const passTag = document.querySelector('.pass-input');
+const popupBox = document.querySelector('.popup-box');
+const closeIcon = document.querySelector('header i');
+const addBox = popupBox.querySelector('button');
 
-const daFiles = [{ title: 'Default', content: 'Placeholder' }];
+const daFiles = [{ title: 'Default', notes: [] }];
+const addButtons = [];
+
+let activeTabIndex = 0; // Track the index of the active tab
+let isUpdate = false;
+let updateId;
 
 closeButton.addEventListener('click', () => {
   newFileBox.style.display = 'none';
+});
+
+closeIcon.addEventListener('click', () => {
+  popupBox.classList.remove('show');
 });
 
 fileButton.addEventListener('click', () => {
@@ -20,28 +36,44 @@ fileButton.addEventListener('click', () => {
 
 function createFile(tab) {
   const file = document.createElement('li');
+  file.classList.add('tab-title');
   file.textContent = tab.title;
 
-  const fileContent = document.createElement('div');
-  fileContent.textContent = tab.content;
+  const fileContent = document.createElement('ul');
+  fileContent.classList.add('tab-content');
+  const addButton = document.createElement('li');
+  addButton.classList.add('add-button');
+  addButton.textContent = 'Add a password';
+
+  const noteContainer = document.createElement('div');
+  noteContainer.classList.add('note-container');
+
+  fileContent.appendChild(addButton);
+  fileContent.appendChild(noteContainer);
+  addButtons.push(addButton);
+
+  addButton.addEventListener('click', () => {
+    nameTag.focus();
+    popupBox.classList.add('show');
+  });
 
   file.addEventListener('click', () => {
-    const tabHeaderItems = fileList.querySelectorAll('li');
+    const tabHeaderItems = fileList.querySelectorAll('.tab-title');
     tabHeaderItems.forEach((item) => {
       item.classList.remove('active-tab');
     });
 
-    const fileContentItems = flex2.querySelectorAll('div');
+    const fileContentItems = flex2.querySelectorAll('.tab-content');
     fileContentItems.forEach((item) => {
       item.classList.remove('active-tab');
     });
 
     file.classList.add('active-tab');
 
-    const index = Array.from(fileList.children).indexOf(file);
-    const fileContent = flex2.children[index];
-
+    activeTabIndex = Array.from(fileList.children).indexOf(file); // Update the activeTabIndex
+    const fileContent = flex2.children[activeTabIndex];
     fileContent.classList.add('active-tab');
+    showNotes(fileContent, tab);
   });
 
   fileList.appendChild(file);
@@ -52,8 +84,8 @@ daFiles.forEach((tab) => {
   createFile(tab);
 });
 
-const firstTabHeaderItem = fileList.querySelector('li');
-const firstTabContentItem = flex2.querySelector('div');
+const firstTabHeaderItem = fileList.querySelector('.tab-title');
+const firstTabContentItem = flex2.querySelector('.tab-content');
 firstTabHeaderItem.classList.add('active-tab');
 firstTabContentItem.classList.add('active-tab');
 
@@ -61,11 +93,57 @@ createFileBtn.addEventListener('click', () => {
   const newTabTitle = input.value;
 
   if (newTabTitle) {
-    const newTabContent = newTabTitle; // Assign an empty string as the initial content for the new tab
-    const newTab = { title: newTabTitle, content: newTabContent };
+    const newTab = { title: newTabTitle, notes: [] };
     daFiles.push(newTab);
     createFile(newTab);
 
     input.value = ''; // Clear the input field after creating a new tab
+  }
+});
+
+function showNotes(fileContent, tab) {
+  const noteContainer = fileContent.querySelector('.note-container');
+  noteContainer.innerHTML = '';
+
+  tab.notes.forEach((note, index) => {
+    const liTag = `<li class="note">
+      <div class="details">
+        <p>${note.name}</p>
+        <p>${note.site}</p>
+        <p>${note.username}</p>
+        <p>${note.password}</p>
+      </div>
+      <div class="bottom-content">
+        <div class="settings">
+          <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
+          <ul class="menu">
+            <li onclick="updateNote(${index}, '${note.name}', '${note.site}', '${note.username}', '${note.password}')"><i class="uil uil-pen"></i>Edit</li>
+            <li onclick="deleteNote(${index})"><i class="uil uil-trash"></i>Delete</li>    
+          </ul>   
+        </div> 
+      </div>
+    </li>`;
+
+    noteContainer.insertAdjacentHTML('beforeend', liTag);
+  });
+}
+
+addBox.addEventListener('click', (e) => {
+  e.preventDefault();
+  let cardName = nameTag.value;
+  let siteName = siteTag.value;
+  let userName = userTag.value;
+  let passName = passTag.value;
+
+  if (cardName && siteName && userName && passName) {
+    let cardInfo = {
+      name: cardName,
+      site: siteName,
+      username: userName,
+      password: passName,
+    };
+    daFiles[activeTabIndex].notes.push(cardInfo);
+    closeIcon.click();
+    showNotes(flex2.children[activeTabIndex], daFiles[activeTabIndex]);
   }
 });
