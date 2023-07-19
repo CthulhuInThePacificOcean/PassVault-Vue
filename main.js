@@ -108,12 +108,11 @@ function showNotes(fileContent, tab) {
   tab.notes.forEach((note, index) => {
     const liTag = `<li class="note">
       <div class="details">
-        <p>${note.name}</p>
-        <p>${note.site}</p>
-        <p>${note.username}</p>
-        <p>${note.password}</p>
+        <p>Name: ${note.name}</p>
+        <p>Link: ${note.site}</p>
+        <p>Username: ${note.username}</p>
+        <p>Password: ${note.password}</p>
       </div>
-      <div class="bottom-content">
         <div class="settings">
           <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
           <ul class="menu">
@@ -121,11 +120,28 @@ function showNotes(fileContent, tab) {
             <li onclick="deleteNote(${index})"><i class="uil uil-trash"></i>Delete</li>    
           </ul>   
         </div> 
-      </div>
     </li>`;
 
     noteContainer.insertAdjacentHTML('beforeend', liTag);
   });
+}
+
+function showMenu(elem){
+  elem.parentElement.classList.add("show");
+  document.addEventListener("click", e => {
+      //removing show from the settings menu on document click
+      if(e.target.tagName != "I" || e.target != elem) {
+          elem.parentElement.classList.remove("show");
+      }
+  });
+}
+
+function deleteNote(noteId){
+  let confirmDel = confirm("Are you sure you want to delete this note?");
+  if(!confirmDel) return;
+  daFiles[activeTabIndex].notes.splice(noteId, 1);  //removing selected note from array/tasks
+  //saving updated notes to local storage
+  showNotes(flex2.children[activeTabIndex], daFiles[activeTabIndex])
 }
 
 addBox.addEventListener('click', (e) => {
@@ -146,4 +162,4 @@ addBox.addEventListener('click', (e) => {
     closeIcon.click();
     showNotes(flex2.children[activeTabIndex], daFiles[activeTabIndex]);
   }
-});
+})  

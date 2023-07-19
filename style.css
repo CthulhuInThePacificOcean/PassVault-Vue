@@ -61,11 +61,33 @@
 
   .note {
     max-height: 200px;
+    background: #4470e9;
   }
 
-  .menu {
-    display: none;
+  .settings{
+    position: relative;
   }
+
+  .settings i:hover{
+    cursor: pointer;
+  }
+
+.settings .menu {
+    position: absolute;
+    bottom: 0;
+    right: calc(-100%, - 5px);
+    padding: 5px 0;
+    background: #597df3;
+    border-radius: 4px;
+    transform: scale(0);
+    transform-origin: bottom right;
+    box-shadow: 0 0 6px rgba(0,0,0,15);
+    transition: transform 0.2s ease;
+}
+
+.settings.show .menu{
+    transform: scale(1);    
+}
   
   .files {
     background-color: blue;
