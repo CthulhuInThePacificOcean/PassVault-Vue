@@ -14,6 +14,7 @@ const passTag = document.querySelector('.pass-input');
 const popupBox = document.querySelector('.popup-box');
 const closeIcon = document.querySelector('header i');
 const addBox = popupBox.querySelector('button');
+const popupTitle = document.querySelector("header p");
 
 const daFiles = [{ title: 'Default', notes: [] }];
 const addButtons = [];
@@ -144,6 +145,18 @@ function deleteNote(noteId){
   showNotes(flex2.children[activeTabIndex], daFiles[activeTabIndex])
 }
 
+function updateNote(noteId, name, site, user, pass){
+  isUpdate = true;
+  updateId = noteId;
+  addButtons[noteId].click();
+  nameTag.value = name;
+  siteTag.value = site;
+  userTag.value = user;
+  passTag.value = pass;
+  addBox.innerText = "Update Note";
+  popupTitle.innerText = "Update a Note";
+}
+
 addBox.addEventListener('click', (e) => {
   e.preventDefault();
   let cardName = nameTag.value;
@@ -158,7 +171,13 @@ addBox.addEventListener('click', (e) => {
       username: userName,
       password: passName,
     };
-    daFiles[activeTabIndex].notes.push(cardInfo);
+    if(!isUpdate){
+      daFiles[activeTabIndex].notes.push(cardInfo);
+    } else {
+      isUpdate = false;
+      daFiles[activeTabIndex].notes[updateId] = cardInfo;
+    }
+    
     closeIcon.click();
     showNotes(flex2.children[activeTabIndex], daFiles[activeTabIndex]);
   }
