@@ -1,5 +1,7 @@
 <template>
-    <ContentView v-for="fileContent in fileContents" :key="fileContent" @content-active="$emit('content-active', content)"/>
+    <ul>
+        <ContentView v-for="file in files" :key="file.content.name" :file="file" @show-popup="$emit('show-popup', file.name)" @edit-card="editCard"/>
+    </ul>
 </template>
 
 <script>
@@ -10,8 +12,13 @@ export default {
         ContentView
     },
     props: {
-        fileContents: Array,
         files: Array  
+    },
+    emits: ['show-popup'],
+    methods: {
+        editCard(card){
+            this.$emit('edit-card', card)
+        }
     }
 }
 </script>

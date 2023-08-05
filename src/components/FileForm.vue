@@ -24,14 +24,13 @@ export default {
             e.preventDefault()
             const item = {
                 name: this.name,
-                isActive: false
-            }
-            const content = {
                 isActive: false,
-                name: this.name,
-                passCardList: []
+                content: {
+                    name: this.name,
+                    passCardList: []
+                }
             }
-            this.$emit('add-file', item, content)
+            this.$emit('add-file', item)
             this.name = ''
         }
     }

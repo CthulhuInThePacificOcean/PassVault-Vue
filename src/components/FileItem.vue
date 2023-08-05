@@ -1,7 +1,7 @@
 <template>
-    <li :class="[file.isActive ? 'active-tab' : '', 'tab-title']">
+    <li :class="[file.isActive ? 'active-tab' : '', 'tab-title']" @click="$emit('add-active', file)">
         <i class="uil uil-trash" @click="$emit('delete-file', file)"></i>
-        <p @click="$emit('add-active', file)">{{ file.name }}</p>
+        <p>{{ file.name }}</p>
     </li>
 </template>
 

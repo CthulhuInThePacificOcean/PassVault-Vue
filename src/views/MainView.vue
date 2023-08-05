@@ -1,4 +1,13 @@
 <template>
+  <PopupBox
+    v-show="cardCreationVisible"
+    @show-popup="showPopup"
+    @close-popup="closePopup"
+    :activeId="this.activeId"
+    :files="files"
+    :cardToUpdate="cardToUpdate"
+    :popupBoxUpdate="popupBoxUpdate"
+  />
   <div class="flex-container">
     <div class="flex-item flex-item-1">
       <button id="new-folder-button" @click="toggleFileCreation">
@@ -6,14 +15,24 @@
       </button>
       <div id="box-1" v-show="fileCreationVisbile">
         <FileForm
-          toggle-file-creation="toggleFileCreation"
+          @toggle-file-creation="toggleFileCreation"
           @add-file="addFile"
         />
       </div>
-      <FileList :files="this.files" :fileContents="this.fileContents" @delete-file="deleteFile" @add-active="addActive" id="file-list"/>
+      <FileList
+        :files="this.files"
+        :fileContents="this.fileContents"
+        @delete-file="deleteFile"
+        @add-active="addActive"
+        id="file-list"
+      />
     </div>
     <div class="flex-item flex-item-2" id="box-2">
-      <ContentList :file-contents="fileContents" :files="files"/>
+      <ContentList
+        :files="files"
+        @show-popup="showPopup"
+        @edit-card="emitUpdateCard"
+      />
     </div>
   </div>
 </template>
@@ -22,6 +41,7 @@
 import ContentList from "@/components/ContentList.vue";
 import FileList from "@/components/FileList.vue";
 import FileForm from "@/components/FileForm.vue";
+import PopupBox from "@/components/PopupBox.vue";
 
 export default {
   name: "Main",
@@ -29,22 +49,35 @@ export default {
     ContentList,
     FileList,
     FileForm,
+    PopupBox,
   },
   data() {
     return {
       fileCreationVisbile: false,
       files: [],
       fileContents: [],
+      cardCreationVisible: false,
+      activeId: "",
+      cardToUpdate: {},
+      popupBoxUpdate: false,
     };
   },
   computed: {},
   methods: {
-    deleteNote(noteId) {
-      let confirmDel = confirm("Are you sure you want to delete this note?");
-      if (!confirmDel) return;
-      daFiles[activeTabIndex].notes.splice(noteId, 1); //removing selected note from array/tasks
-      //saving updated notes to local storage
-      showNotes(flex2.children[activeTabIndex], daFiles[activeTabIndex]);
+    emitUpdateCard(targetCard) {
+      this.cardToUpdate = targetCard;
+      this.popupBoxUpdate = true;
+      this.showPopup(true)
+      console.log(this.cardToUpdate)
+      console.log(this.popupBoxUpdate)
+      /*file.content.passCardList.forEach((card) => {
+        if (card == targetCard) {
+          const cardIndex = file.content.passCardList.indexOf(card);
+          this.cardToUpdate = file.content.passCardList[cardIndex]
+          this.popupBoxUpdate = true
+          this.showPopup()
+        }
+      });*/
     },
 
     updateNote(noteId, name, site, user, pass) {
@@ -63,9 +96,19 @@ export default {
       this.fileCreationVisbile = !this.fileCreationVisbile;
     },
 
-    addFile(file, content) {
+    showPopup(bool) {
+      this.cardCreationVisible = true;
+      /*if(bool == false){
+        this.popupBoxUpdate = false
+      }*/
+    },
+    closePopup(){
+      this.cardCreationVisible = false
+      this.popupBoxUpdate = false
+    },
+    addFile(file) {
       this.files = [...this.files, file];
-      this.fileContents = [this.fileContents, content];
+      this.fileContents = [...this.fileContents, file.content];
     },
 
     deleteFile(file) {
@@ -76,14 +119,18 @@ export default {
     },
 
     addActive(id) {
-      this.files.forEach(file => {
-        file.isActive = false
-      })
+      this.files.forEach((file) => {
+        file.isActive = false;
+      });
       const fileIndex = this.files.indexOf(id);
-      this.files = this.files.map((file) => this.files[fileIndex] === file
-      ? {...file, isActive: !file.isActive} : file)
+      this.files = this.files.map((file) =>
+        this.files[fileIndex] === file
+          ? { ...file, isActive: !file.isActive }
+          : file
+      );
     },
+    
   },
-  emits: ["add-file", "add-active"],
+  emits: ["add-file", "add-active", "show-popup"],
 };
 </script>

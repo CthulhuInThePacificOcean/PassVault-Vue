@@ -73,25 +73,36 @@ body {
   position: relative;
 }
 
-.settings i:hover {
+.settings i{
   cursor: pointer;
+}
+
+.settings.show .menu{
+  cursor: pointer;
+  transform: scale(1);
 }
 
 .settings .menu {
   position: absolute;
-  bottom: 0;
+  left: 20px;
   right: calc(-100%, - 5px);
+  top: 5px;
   padding: 5px 0;
   background: #597df3;
   border-radius: 4px;
+  list-style: none;
   transform: scale(0);
-  transform-origin: bottom right;
+  transform-origin: top left;
   box-shadow: 0 0 6px rgba(0, 0, 0, 15);
   transition: transform 0.2s ease;
 }
+.settings.menu li{
+  height: 25px;
+  padding: 17px 15px;
+}
 
-.settings.show .menu {
-  transform: scale(1);
+.settings.menu li:hover{
+  background: #0d3ddb;
 }
 
 .files {
@@ -174,11 +185,11 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.popup-box,
+/*.popup-box,
 .popup-box .popup {
   opacity: 0;
   pointer-events: none;
-}
+}*/
 
 .popup-box.show,
 .popup-box.show .popup {
@@ -190,4 +201,5 @@ body {
 .add-button:hover {
   background: #ccc;
   max-height: 200px;
+  min-height: 200px;
 }
