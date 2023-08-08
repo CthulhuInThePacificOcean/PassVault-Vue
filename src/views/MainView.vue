@@ -117,6 +117,7 @@ export default {
     updateFile(file){
       const fileIndex = this.files.indexOf(file)
       this.files.splice(fileIndex, 1, file)
+      this.addActive(file)
     },
     deleteFile(file) {
       if (confirm("Are you sure you want to delete this file")) {
