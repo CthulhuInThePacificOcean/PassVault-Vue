@@ -1,6 +1,6 @@
 <template>
     <ul>
-        <ContentView v-for="file in files" :key="file.content.name" :file="file" @show-popup="$emit('show-popup', file.name)" @edit-card="editCard"/>
+        <ContentView v-for="file in files" :key="file.content.name" :file="file" @show-popup="$emit('show-popup')" @edit-card="editCard"/>
     </ul>
 </template>
 

@@ -17,6 +17,10 @@
         <FileForm
           @toggle-file-creation="toggleFileCreation"
           @add-file="addFile"
+          :fileFormUpdate = 'fileFormUpdate'
+          :folderToUpdate = 'folderToUpdate'
+          @close-file-creation="closeFileCreation"
+          @update-file="updateFile"
         />
       </div>
       <FileList
@@ -24,6 +28,7 @@
         :fileContents="this.fileContents"
         @delete-file="deleteFile"
         @add-active="addActive"
+        @edit-folder="emitUpdateFolder"
         id="file-list"
       />
     </div>
@@ -59,7 +64,9 @@ export default {
       cardCreationVisible: false,
       activeId: "",
       cardToUpdate: {},
+      folderToUpdate: {},
       popupBoxUpdate: false,
+      fileFormUpdate: false
     };
   },
   computed: {},
@@ -67,17 +74,12 @@ export default {
     emitUpdateCard(targetCard) {
       this.cardToUpdate = targetCard;
       this.popupBoxUpdate = true;
-      this.showPopup(true)
-      console.log(this.cardToUpdate)
-      console.log(this.popupBoxUpdate)
-      /*file.content.passCardList.forEach((card) => {
-        if (card == targetCard) {
-          const cardIndex = file.content.passCardList.indexOf(card);
-          this.cardToUpdate = file.content.passCardList[cardIndex]
-          this.popupBoxUpdate = true
-          this.showPopup()
-        }
-      });*/
+      this.showPopup()
+    },
+    emitUpdateFolder(targetFolder) {
+      this.folderToUpdate = targetFolder;
+      this.fileFormUpdate = true;
+      this.toggleFileCreation()
     },
 
     updateNote(noteId, name, site, user, pass) {
@@ -93,14 +95,16 @@ export default {
     },
 
     toggleFileCreation() {
-      this.fileCreationVisbile = !this.fileCreationVisbile;
+      this.fileCreationVisbile = true;
     },
 
-    showPopup(bool) {
+    closeFileCreation() {
+      this.fileCreationVisbile = false;
+      this.fileFormUpdate = false
+    },
+
+    showPopup() {
       this.cardCreationVisible = true;
-      /*if(bool == false){
-        this.popupBoxUpdate = false
-      }*/
     },
     closePopup(){
       this.cardCreationVisible = false
@@ -110,7 +114,10 @@ export default {
       this.files = [...this.files, file];
       this.fileContents = [...this.fileContents, file.content];
     },
-
+    updateFile(file){
+      const fileIndex = this.files.indexOf(file)
+      this.files.splice(fileIndex, 1, file)
+    },
     deleteFile(file) {
       if (confirm("Are you sure you want to delete this file")) {
         const fileIndex = this.files.indexOf(file);
