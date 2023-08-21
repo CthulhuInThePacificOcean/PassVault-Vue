@@ -10,7 +10,7 @@
       <i class="uil uil-ellipsis-h"></i>
       <ul class="menu" >
         <li @click="editCard"><i class="uil uil-pen"></i>Edit</li>
-        <li ><i class="uil uil-trash" @click="$emit('delete-card', card)"></i>Delete</li>
+        <li @click="$emit('delete-card', card)"><i class="uil uil-trash"></i>Delete</li>
       </ul>
     </div>
     <div class="settings" @click="changeView" v-else>

@@ -1,7 +1,5 @@
 <template>
-    <ul>
-        <ContentView v-for="file in files" :key="file.content.name" :file="file" @show-popup="$emit('show-popup')" @edit-card="editCard"/>
-    </ul>
+    <ContentView v-for="file in files" :key="file.content.name" :file="file" @show-popup="$emit('show-popup')" @edit-card="editCard"/>
 </template>
 
 <script>

@@ -1,8 +1,7 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <h1>PassVault</h1>
-    <h1>A place to store your passwords!</h1>
+    <img alt="Passvault logo" src="../assets/passvault2.png">
+    <button @click="this.$router.push({ name: 'login' });">Get Started</button>
   </div>
 </template>
 

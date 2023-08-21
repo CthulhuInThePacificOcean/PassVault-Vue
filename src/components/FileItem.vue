@@ -3,9 +3,11 @@
     :class="[file.isActive ? 'active-tab' : '', 'tab-title']"
     @click="$emit('add-active', file)"
   >
+    <span>
+      <p>{{ file.name }}</p>
+    </span>
     <i class="uil uil-trash" @click="$emit('delete-file', file)"></i>
     <i class="uil uil-pen" @click="editFolder"></i>
-    <p>{{ file.name }}</p>
   </li>
 </template>
 
