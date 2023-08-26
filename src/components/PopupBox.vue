@@ -48,7 +48,8 @@ export default {
     activeId: String,
     files: Array,
     cardToUpdate: Object,
-    popupBoxUpdate: Boolean
+    popupBoxUpdate: Boolean,
+    userFiles: Array
   },
   watch: {
     cardToUpdate: {
@@ -98,11 +99,12 @@ export default {
         };
         
         // Update the existing card in the files array
-        this.files.forEach(file => {
+        this.userFiles.forEach(file => {
           if (file.isActive) {
             const index = file.content.passCardList.findIndex(card => card === this.cardToUpdate);
             if (index !== -1) {
               file.content.passCardList.splice(index, 1, updatedCard);
+              this.$emit('save-file')
             }
           }
         });
@@ -118,10 +120,11 @@ export default {
         password: this.password,
       }
 
-      this.files.forEach(file => {
+      this.userFiles.forEach(file => {
         if(file.isActive == true){
           file.content.passCardList = [...file.content.passCardList, passCard]
           console.log(file.content.passCardList)
+          this.$emit('save-file')
         }
       })
       }

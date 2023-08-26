@@ -5,14 +5,14 @@
           type="text"
           placeholder="Display Name"
           required
-          v-model="username"
+          v-model="registerForm.username"
         />
-        <input type="email" placeholder="Email" required v-model="email" />
+        <input type="email" placeholder="Email" required v-model="registerForm.email" />
         <input
           type="password"
           placeholder="Password"
           required
-          v-model="password"
+          v-model="registerForm.password"
         />
         <button type="submit">Create Account</button>
       </form>
@@ -27,26 +27,14 @@ export default {
     return {
       email: "",
       password: "",
-      username: ""
+      username: "",
+      registerForm: ref({}),
+      store: useStore()
     };
   },
   methods: {
     signUp() {
-      // register and login user
-      createUserWithEmailAndPassword(auth, this.email, this.password).then(
-        () => {
-          // update 'displayName'
-          updateProfile(auth.currentUser, {
-            displayName: this.username,
-          }).then(() => {
-            // emit event
-            this.$emit("loggedIn");
-          })
-          .catch((err) => {
-            console.log(err)
-          });
-        }
-      );
+      this.store.dispatch('register', this.registerForm.value);
     },
   },
 };

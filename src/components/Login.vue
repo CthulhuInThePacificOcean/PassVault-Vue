@@ -1,12 +1,12 @@
 <template>
     <h1>Login</h1>
       <form @submit.prevent="login">
-        <input type="email" placeholder="Email" required v-model="email" />
+        <input type="email" placeholder="Email" required v-model="loginForm.email" />
         <input
           type="password"
           placeholder="Password"
           required
-          v-model="password"
+          v-model="loginForm.password"
         />
         <button type="submit">Sign In</button>
       </form>
@@ -21,19 +21,13 @@ export default {
     return {
       email: "",
       password: "",
+      loginForm: ref({}),
+      store: useStore()
     };
   },
   methods: {
     login() {
-      // register and login user
-      signInWithEmailAndPassword(auth, this.email, this.password)
-      .then(() => {
-        // emit event
-        this.$emit("loggedIn");
-      })
-      .catch((err) => {
-        console.log(err)
-      });
+    this.store.dispatch('login', this.loginForm.value);
     },
   },
 };

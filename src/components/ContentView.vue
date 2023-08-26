@@ -19,7 +19,7 @@ import PassCard from "./PassCard.vue";
 import AddButton from "./AddButton.vue";
 export default {
   props: {
-    file: Object,
+    file: Object
   },
   components: {
     AddButton,
@@ -37,6 +37,7 @@ export default {
         if (card == targetCard) {
           const cardIndex = this.fileHolder.content.passCardList.indexOf(card);
           this.fileHolder.content.passCardList.splice(cardIndex, 1);
+          this.$emit('save-file')
         }
       });
     },
