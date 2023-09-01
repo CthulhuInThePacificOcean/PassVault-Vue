@@ -23,6 +23,11 @@
           <div class="row-password">
             <label>Password</label>
             <input type="text" class="pass-input" v-model="password" />
+            <p>Don't have an existing password for the account? Go to <span @click="this.$router.push({name: 'generator'})">Password Generator</span></p>
+          </div>
+          <div class="row-color">
+            <label>Color</label>
+            <input type="color" class="color-input" v-model="color" />
           </div>
           <button @click.prevent="onSubmit" v-if="popupBoxUpdate">Update PassCard</button>
           <button @click.prevent="onSubmit" v-else>Add PassCard</button>
@@ -42,6 +47,7 @@ export default {
       password: '',
       isUpdate: false,
       tempCard: {}, // New property to hold temporary values for editing mode
+      color: '#0000ff'
     }
   },
   props: {
@@ -60,6 +66,7 @@ export default {
         this.website = newValue.website || "";
         this.username = newValue.username || "";
         this.password = newValue.password || "";
+        this.color = newValue.color || "#0000ff";
         // Reset the temporary card values whenever cardToUpdate changes
         this.tempCard = { ...newValue };
       },
@@ -77,6 +84,7 @@ export default {
           this.website = "";
           this.username = "";
           this.password = "";
+          this.color = '#0000ff'
         }
         this.resetData(); // Call resetData() when transitioning between modes
       },
@@ -96,6 +104,7 @@ export default {
           website: this.website,
           username: this.username,
           password: this.password,
+          color: this.color
         };
         
         // Update the existing card in the files array
@@ -118,6 +127,7 @@ export default {
         website: this.website,
         username: this.username,
         password: this.password,
+        color: this.color
       }
 
       this.userFiles.forEach(file => {
@@ -154,3 +164,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+span {
+  color:blue;
+  text-decoration: underline;
+}
+
+span:hover {
+  color: rgb(55, 196, 201);
+}
+</style>

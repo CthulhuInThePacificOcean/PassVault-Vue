@@ -5,8 +5,9 @@
     <input type="email" placeholder="Email" required v-model="registerForm.email"/>
     <input type="password" placeholder="Password" required v-model="registerForm.password"/>
     <button type="submit">Create Account</button>
-    <p>Already have an account? <span>Login</span></p>
+    <p>Already have an account? <span @click="this.$router.push({ name: 'login' });">Login</span></p>
   </form>
+  <button @click="registerWithGoogle">Register With Google</button>
 </template>
 
 <script>
@@ -30,6 +31,20 @@ export default {
     signUp() {
       this.store.dispatch('register', this.registerForm);
     },
+   registerWithGoogle(){
+      this.store.dispatch('registerWithGoogle')
+    }
   },
 };
 </script>
+
+<style scoped>
+span {
+  color:blue;
+  text-decoration: underline;
+}
+
+span:hover {
+  color: rgb(55, 196, 201);
+}
+</style>

@@ -9,6 +9,7 @@
 export default {
     props: {
         passCardItem: Object
-    }
+    },
+    emits: ['show-popup']
 }
 </script>

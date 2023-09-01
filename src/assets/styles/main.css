@@ -185,15 +185,6 @@ body {
   color: rgb(240, 109, 109);
 }
 
-
-.active {
-  display: block;
-}
-
-.pass-items.active {
-  display: flex;
-}
-
 .pass-items {
   display: none;
 }
@@ -235,6 +226,7 @@ body {
 
 .add-button:hover {
   background: #000000;
+  transition: all 0.25s ease;
   
 }
 
@@ -247,6 +239,7 @@ body {
   color: white;
   text-align: center;
   background: #4f5658;
+  transition: all 0.25s ease;
 }
 
 .add-button svg{

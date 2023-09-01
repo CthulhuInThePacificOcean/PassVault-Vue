@@ -70,15 +70,10 @@ import FileList from "@/components/FileList.vue";
 import FileForm from "@/components/FileForm.vue";
 import PopupBox from "@/components/PopupBox.vue";
 import { auth, db } from "../firebase/init.js";
-//import { signOut } from "firebase/auth";
-//import { signInWithEmailAndPassword } from "firebase/auth";
-//import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import Login from "@/components/Login.vue";
 import Register from "@/components/Register.vue";
-import { ref } from "vue";
 import { useStore } from "vuex";
-import { mapState } from "vuex";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+
 
 export default {
   name: "Main",
@@ -182,8 +177,8 @@ export default {
       // this.files.splice(fileIndex, 1, file);
       //this.addActive(file);
       //this.saveFilesToFirestore(this.userId);
-      const fileIndex = this.files.indexOf(file);
-      this.files.splice(fileIndex, 1, file);
+      const fileIndex = this.userFiles.indexOf(file);
+      this.userFiles.splice(fileIndex, 1, file);
       this.addActive(file);
       this.saveFilesToFirestore(this.userId);
     },
@@ -203,6 +198,7 @@ export default {
       userFiles.forEach((file) => {
         file.isActive = false;
       });
+      console.log(fileContents)
       fileContents.forEach((fileContent) => {
         fileContent.isActive = false;
       });
@@ -227,29 +223,12 @@ export default {
     signOut() {
       this.store.dispatch("logout");
     },
-    async loadFiles(userId) {
-      console.log("Loading files for user:", userId);
-
-      const userFilesRef = db.collection("userFiles").doc(userId);
-      const userFilesDoc = await userFilesRef.get();
-
-      if (userFilesDoc.exists) {
-        const userData = userFilesDoc.data();
-        console.log("Fetched data from Firestore:", userData);
-
-        this.$store.commit("SET_USER_FILES", userData.files || []);
-        this.$store.commit("SET_FILE_CONTENTS", userData.fileContents || []);
-      } else {
-        console.log("No user files found in Firestore.");
-        this.$store.commit("SET_USER_FILES", []);
-        this.$store.commit("SET_FILE_CONTENTS", []);
-      }
-    },
     async saveFilesToFirestore(userId) {
+      console.log(userId)
       this.store.dispatch("saveFilesToFirestore", userId);
     },
   },
-  emits: ["add-file", "add-active", "show-popup"],
+  emits: ["add-file", "add-active", "show-popup", "save-file"],
 };
 </script>
 

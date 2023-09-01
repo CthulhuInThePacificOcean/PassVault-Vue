@@ -1,6 +1,9 @@
 <template>
   <li
     :class="[file.isActive ? 'active-tab' : '', 'tab-title']"
+    :style=" {backgroundColor: file.isActive || isHovered? file.hoverColor : file.color,
+      transition: 'background-color 0.3s' }"
+    @mouseenter="isHovered = true" @mouseleave="isHovered = false"
     @click="$emit('add-active', file)"
   >
     <span>
@@ -20,9 +23,10 @@ export default {
   data() {
     return {
       isClicked: false,
+      isHovered: false
     };
   },
-  emits: ["delete-file", "add-active"],
+  emits: ["delete-file", "add-active", "edit-folder"],
   methods: {
     editFolder() {
       this.isClicked = true;

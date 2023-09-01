@@ -4,8 +4,9 @@
     <input type="email" placeholder="Email" required v-model="loginForm.email"/>
     <input type="password" placeholder="Password" required v-model="loginForm.password"/>
     <button type="submit">Login</button>
-    <p>Don't have an account? <span>Register</span></p>
+    <p>Don't have an account? <span @click="this.$router.push({ name: 'register' });">Register</span></p>
   </form>
+  <button @click="loginWithGoogle">Login With Google</button>
 </template>
 
 <script>
@@ -29,6 +30,9 @@ export default {
     login() {
       this.store.dispatch('login', this.loginForm);
     },
+    loginWithGoogle(){
+      this.store.dispatch('loginWithGoogle')
+    }
   },
   beforeUpdate(){
     if(auth.currentUser){
@@ -37,3 +41,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+span {
+  color:blue;
+  text-decoration: underline;
+}
+
+span:hover {
+  color: rgb(red, rgb(55, 196, 201), blue);
+}
+</style>
